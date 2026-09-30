@@ -66,7 +66,7 @@ class Jumbo(Agent):
         self.reward_store = [[] for _ in range(self.action_space.n)]
         self.action_taken = np.zeros(self.action_space.n)
         self.action_value_updated_method = action_value_update_method
-        self.temperature = 1.0
+        self.temperature = 0.1
         self.action_value_exp_over_temp = np.zeros(self.action_space.n)
         self.action_value_softmax = np.zeros(self.action_space.n)
         self.action_value_exp_over_temp_sum = 0
@@ -79,6 +79,7 @@ class Jumbo(Agent):
         #softmax action selection method
         #divide by temperature
         self.action_value_exp_over_temp = np.exp(self.action_value/self.temperature)
+        self.temperature -= 0
         self.action_value_exp_over_temp_sum = sum(self.action_value_exp_over_temp)
         self.action_value_softmax = self.action_value_exp_over_temp / self.action_value_exp_over_temp_sum
         best = np.flatnonzero(self.action_value_softmax == self.action_value_softmax.max())
@@ -152,7 +153,7 @@ class StepRewardRecorder(Callback):
 #     main()
 
 # Settings in one place so they're easy to change and to report
-N_STEPS = 10_000
+N_STEPS = 10000
 N_EPISODES = 1
 EPSILON = 0.1
 ALPHA = 0.1         # step size for the constant-step-size method
