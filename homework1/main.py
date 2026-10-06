@@ -1,10 +1,5 @@
 """Homework 1:
-
-    cp -r homework_template homework1
     python -m homework1.main          # run from the reinforcement_learning/ folder
-
-Everything below is an example to replace with your own env and agent.
-As the homework grows, split them into env.py / agent.py in this folder.
 """
 import numpy as np
 
@@ -13,6 +8,7 @@ from rl.core import Agent, Discrete, Environment, StepResult
 from rl.runner import Runner
 from rl.utils import set_global_seed
 from homework1.plotting import plot_bandit_results
+from homework1.results_io import save_results
 
 
 
@@ -66,27 +62,42 @@ class Jumbo(Agent):
         self.reward_store = [[] for _ in range(self.action_space.n)]
         self.action_taken = np.zeros(self.action_space.n)
         self.action_value_updated_method = action_value_update_method
-        self.temperature = 0.1
         self.action_value_exp_over_temp = np.zeros(self.action_space.n)
         self.action_value_softmax = np.zeros(self.action_space.n)
         self.action_value_exp_over_temp_sum = 0
+        
+        self.temperature = 0.1
+        self.T = 2000
+        self.t = 0
+        self.epsilon_start = 0.1 #epsilon_start
+        self.epsilon_min = 0.05 #epsilon_min
+        self.temp_start = 0.5
+        self.temp_min = 0.15
 
     def act(self, obs):
+        # ε_t = max( ε_min , ε₀ − (ε₀ − ε_min) · t / T )
+        # τ_t = max( τ_min , τ₀ − (τ₀ − τ_min) · t / T )
+        # Epsilon Greedy
+        self.epsilon = max( self.epsilon_min , self.epsilon_start - (self.epsilon_start - self.epsilon_min)* self.t / self.T )
         if self.training and self.rng.random() < self.epsilon:
             return int(self.rng.integers(self.action_space.n))
-        # best = np.flatnonzero(self.action_value == self.action_value.max())
+        #decay the epsilon here
+        best = np.flatnonzero(self.action_value == self.action_value.max())
+        return int(self.rng.choice(best))
 
         #softmax action selection method
         #divide by temperature
-        self.action_value_exp_over_temp = np.exp(self.action_value/self.temperature)
-        self.temperature -= 0
-        self.action_value_exp_over_temp_sum = sum(self.action_value_exp_over_temp)
-        self.action_value_softmax = self.action_value_exp_over_temp / self.action_value_exp_over_temp_sum
-        best = np.flatnonzero(self.action_value_softmax == self.action_value_softmax.max())
+        # self.temperature = max(self.temp_min , self.temp_start - (self.temp_start - self.temp_min) * self.t / self.T)
+        # self.action_value_exp_over_temp = np.exp(self.action_value/self.temperature)
+        # self.action_value_exp_over_temp_sum = sum(self.action_value_exp_over_temp)
+        # self.action_value_softmax = self.action_value_exp_over_temp / self.action_value_exp_over_temp_sum
+        # best = np.flatnonzero(self.action_value_softmax == self.action_value_softmax.max())
+        # return int(self.rng.choice(self.action_space.n, p=self.action_value_softmax))  # random tie-breaking
 
-        return int(self.rng.choice(self.action_space.n, p=self.action_value_softmax))  # random tie-breaking
+
 
     def update(self, t):
+        self.t += 1
         # Updating action value using sample averaging method that keeps track of all rewards
         if self.action_value_updated_method == "sample_averaging":
             self.reward_store[t.action].append(t.reward)
@@ -109,6 +120,7 @@ class Jumbo(Agent):
         self.action_taken = np.zeros(self.action_space.n)
         self.action_value = np.zeros(self.action_space.n)
         self.reward_store = [[] for _ in range(self.action_space.n)]
+        self.t = 0
 
     def on_episode_end(self) -> None:
         pass
@@ -154,13 +166,13 @@ class StepRewardRecorder(Callback):
 
 # Settings in one place so they're easy to change and to report
 N_STEPS = 10000
-N_EPISODES = 1
+N_EPISODES = 1000
 EPSILON = 0.1
 ALPHA = 0.1         # step size for the constant-step-size method
-WINDOW = 100        # moving-average window for the plots
+WINDOW = 1       # moving-average window for the plots
 SEED = 0
  
-METHODS = {        # plot label -> action_value_update_method passed to the agent
+METHODS = {        
     "sample average": "sample_averaging",
     "incremental average": "incremental_average",
     f"constant step size (α={ALPHA})": "step_size_method",
@@ -180,7 +192,10 @@ def run_method(method):
 def main():
     set_global_seed(SEED)
     results = {label: run_method(method) for label, method in METHODS.items()}
- 
+    
+    save_results(results, "results/hw1_bandit.npz", settings={
+        "n_steps": N_STEPS, "n_runs": N_EPISODES, "epsilon": EPSILON, "alpha": ALPHA, "seed": SEED,
+    })
     # Summary table: performance over the last 1,000 steps
     print(f"{'method':32s} {'avg reward':>11s} {'% optimal':>10s}   (last 1000 steps)")
     for label, (rewards, is_optimal) in results.items():
@@ -193,6 +208,7 @@ def main():
     print(f"\nmax |reward difference| sample vs incremental: {np.max(np.abs(sample - incremental)):.2e}")
  
     plot_bandit_results(results, window=WINDOW, layout="columns")
+    # plot_bandit_results(results, window=WINDOW, layout="overlay")
  
  
 if __name__ == "__main__":

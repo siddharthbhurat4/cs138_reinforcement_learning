@@ -43,7 +43,7 @@ wandb/
 *.pt
 *.pth
 *.npz
-
+*.png
 # Generated plots. To commit the final figures for a report, either
 # remove this line or force-add them: git add -f homework1/report/fig1.png
 results/
