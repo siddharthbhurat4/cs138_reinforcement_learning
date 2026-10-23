@@ -36,7 +36,30 @@ class Discrete(Space):
 
     def __repr__(self) -> str:
         return f"Discrete({self.n})"
+    
+class MultiDiscrete(Space):
+    """Several integers; component i ranges over {0, 1, ..., sizes[i] - 1}.
 
+    Example: MultiDiscrete((8, 8, 5, 5)) for (row, col, vx, vy).
+    """
+    def __init__(self, sizes, seed: Any = None):
+        self.sizes = np.asarray(sizes, dtype=np.int64)
+        if self.sizes.ndim != 1 or np.any(self.sizes <= 0):
+            raise ValueError(f"sizes must be a 1-D sequence of positive integers, got {sizes}")
+        self.shape = self.sizes.shape
+        super().__init__(seed)
+
+    def sample(self) -> np.ndarray:
+        return self.rng.integers(self.sizes)
+
+    def contains(self, x: Any) -> bool:
+        x = np.asarray(x)
+        return (x.shape == self.shape
+                and np.issubdtype(x.dtype, np.integer)
+                and bool(np.all((x >= 0) & (x < self.sizes))))
+
+    def __repr__(self) -> str:
+        return f"MultiDiscrete({self.sizes.tolist()})"
 
 class Box(Space):
     """Continuous (or bounded integer) n-dimensional box."""
