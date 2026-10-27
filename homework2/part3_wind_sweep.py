@@ -1,8 +1,8 @@
 """Train the Part 1 agent on the windy STAIRCASE with several wind probabilities, then plot
 greedy routes (one panel per wind probability) and the learning curves (one plot, one curve each).
 
-    python -m homework2.wind_sweep               # train all runs, then plot
-    python -m homework2.wind_sweep --plot-only   # re-plot from the saved agents and episode lengths
+    python -m homework2.part3_wind_sweep               # train all runs, then plot
+    python -m homework2.part3_wind_sweep --plot-only   # re-plot from the saved agents and episode lengths
 """
 import argparse
 import os
