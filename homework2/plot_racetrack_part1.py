@@ -1,13 +1,8 @@
 """Visualise a trained racetrack agent (run after homework2.main has saved it).
 
-    python -m homework2.plot_racetrack --track track1                # show the figures
-    python -m homework2.plot_racetrack --track track2 --routes 5 --save   # save them instead
+    python -m homework2.plot_racetrack_part1 --track track1                # show the figures
+    python -m homework2.plot_racetrack_part1 --track track2 --routes 5 --save   # save them instead
 
-    --track: small (the 8x8 track), track1 or track2 (the book's tracks) - use the one the agent was trained on
-
-Figure 1: the track with several greedy routes from the start line (noise on).
-Figure 2: how often each cell was explored during training.
-Figure 3: the learning curve, if the episode-lengths file exists.
 """
 import argparse
 import os
