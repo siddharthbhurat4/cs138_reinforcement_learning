@@ -1,7 +1,7 @@
 """Train the Part 1 agent with several discount factors on TRACK_1 and TRACK_2 and plot the learning curves.
 
-    python -m homework2.gamma_sweep               # train all runs, then plot
-    python -m homework2.gamma_sweep --plot-only   # re-plot from the saved episode lengths
+    python -m homework2.gamma_sweep_part1               # train all runs, then plot
+    python -m homework2.gamma_sweep_part1 --plot-only   # re-plot from the saved episode lengths
 
 One figure per track, with one learning curve (episode length, smoothed) per gamma.
 """

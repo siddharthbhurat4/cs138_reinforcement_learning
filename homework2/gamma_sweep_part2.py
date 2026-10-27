@@ -1,8 +1,8 @@
 """Train the Part 2 learner (car 2, with car 1 on the track) with several discount factors on
 TRACK_1 and TRACK_2 and plot the learning curves.
 
-    python -m homework2.gamma_sweep_dual               # train all runs, then plot
-    python -m homework2.gamma_sweep_dual --plot-only   # re-plot from the saved episode lengths
+    python -m homework2.gamma_sweep_part2               # train all runs, then plot
+    python -m homework2.gamma_sweep_part2 --plot-only   # re-plot from the saved episode lengths
 
 One figure per track, with one learning curve (episode length of car 2, smoothed) per gamma.
 Car 1 uses the Part 1 agent trained on the same track (AGENT1_FILES below).
