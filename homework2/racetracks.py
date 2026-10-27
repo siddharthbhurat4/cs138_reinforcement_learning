@@ -1,4 +1,4 @@
-"""The two racetracks from Sutton & Barto, Figure 5.5 (exercise 5.12), plus a spiral track, as grids for RaceTrack.
+"""The two racetracks from Sutton & Barto, Figure 5.5 (exercise 5.12), plus a staircase track, as grids for RaceTrack.
 
 Each layout row is a string of digits, using the codes from main.py:
     0 = TRACK    1 = OFF_TRACK    2 = START    3 = FINISH
@@ -80,22 +80,27 @@ TRACK_2 = [
 ]
 
 
-# Spiral (own track): 13 rows x 13 columns, 2-cell-wide lanes, 1-cell walls.
-# Start at the bottom left heading right, spiral inwards anticlockwise, finish in the middle.
+
+# Staircase (own track): 16 rows x 16 columns, 3-cell-wide lanes.
+# Winds up, right, up, right, up, right from the start (bottom left) to the finish (top right).
+# Only moves up and right are needed, so it works with non-negative velocities.
 TRACK_3 = [
-    "0000000000000",
-    "0000000000000",
-    "0011111111100",
-    "0010000000100",
-    "0010000000100",
-    "0010011100100",
-    "0013311100100",
-    "0011111100100",
-    "0000000000100",
-    "0000000000100",
-    "1111111111100",
-    "1120000000000",
-    "1120000000000",
+    "1111111111000003",
+    "1111111111000003",
+    "1111111111000003",
+    "1111111111000111",
+    "1111100000000111",
+    "1111100000000111",
+    "1111100000000111",
+    "1111100011111111",
+    "1111100011111111",
+    "0000000011111111",
+    "0000000011111111",
+    "0000000011111111",
+    "0001111111111111",
+    "0001111111111111",
+    "0001111111111111",
+    "2221111111111111",
 ]
 
 
