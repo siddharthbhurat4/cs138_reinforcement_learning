@@ -20,8 +20,8 @@ from homework2.main import FINISH, OFF_TRACK, START, TRACK, Jumbo, RaceTrack
 from homework2.racetracks import TRACK_1, TRACK_2, TRACK_3, make_grid
 from rl.utils import moving_average
 
-AGENT_FILE = "homework2/results/hw2_mc_agent1_track2.pkl"
-LENGTHS_FILE = "homework2/results/hw2_episode_lengths_agent1_track2.npy"
+AGENT_FILE = "homework2/results/hw2_mc_agent1_track3.pkl"
+LENGTHS_FILE = "homework2/results/hw2_episode_lengths_agent1_track3.npy"
 PLOT_DIR = "homework2/plot_results"
 TRACK_COLORS = {TRACK: "#f2f2f2", OFF_TRACK: "#555555", START: "#9ecae1", FINISH: "#a1d99b"}
 
@@ -149,7 +149,7 @@ def main():
     parser.add_argument("--track", default="track1", choices=sorted(GRIDS), help="the track the agent was trained on")
     parser.add_argument("--agent", default=AGENT_FILE)
     parser.add_argument("--lengths", default=LENGTHS_FILE)
-    parser.add_argument("--routes", type=int, default=20, help="number of greedy routes to draw")
+    parser.add_argument("--routes", type=int, default=5, help="number of greedy routes to draw")
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--save", action="store_true", help=f"save figures to {PLOT_DIR}/ instead of showing them")
     args = parser.parse_args()
