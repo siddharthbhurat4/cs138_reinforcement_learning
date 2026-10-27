@@ -4,13 +4,6 @@ Run after the Part 2 training script has saved its agent and episode lengths:
 
     python -m homework2.plot_racetrack_part2 --track track1                    # show the figures
     python -m homework2.plot_racetrack_part2 --track track2 --episodes 4 --save   # save them instead
-
-    --track: small (the 8x8 track), track1 or track2 - use the one both agents were trained on
-
-Figure 1: several greedy episodes, each showing both cars' paths with step numbers.
-Figure 2: learning curve of car 2 (plus the Part 1 single-car curve, if its lengths file exists).
-Figure 3: how often car 2 learned from each cell.
-It also prints a summary over many greedy episodes (lap length, restarts, who finished first).
 """
 import argparse
 import os
