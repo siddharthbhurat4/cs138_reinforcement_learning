@@ -39,13 +39,13 @@ reinforcement_learning/
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
-
+<!--
 ## Running a homework
 
 ```bash
 python -m homework1.main        # always run from the reinforcement_learning/ folder
 ```
-
+-->
 <!--
 ## Before committing changes to `rl/`
 
